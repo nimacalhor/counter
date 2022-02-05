@@ -2,8 +2,6 @@ const containerNumber = document.querySelector("#number");
 const inputMinValue = document.querySelector("#minValue")
 const inputMaxValue = document.querySelector("#maxValue")
 const inputStep = document.querySelector("#step")
-const btnAddOne = document.querySelector("#btnAddOne")
-const btnRemoveOne = document.querySelector("#btnRemoveOne")
 const form = document.querySelector("form")
 
 let starterNumber;
@@ -37,7 +35,20 @@ const checkRange = function (min, max) {
     return false
 }
 
-const descendingInterval = () => setInterval(remove, 1500);
+const remove = function () {
+    const result = starterNumber - step;
+    // if result is in range
+    if (!isResultInRange(result)) {
+        clearInterval(descendingInterval)
+        console.log("cleared")
+        return;
+    }
+
+    starterNumber = result;
+    updateNumber()
+}
+
+let descendingInterval;
 
 const setValues = function (min, max, stepAmount) {
     // three possible results :
@@ -70,20 +81,10 @@ const submitHandler = function (e) {
     e.preventDefault();
     getValues();
     updateNumber()
-    descendingInterval();
+    descendingInterval = setInterval(remove, 1500);
 }
 
 const isResultInRange = num => (minValue <= num) && (num <= maxValue);
-
-
-const remove = function () {
-    const result = starterNumber - step;
-    // if result is in range
-    if (!isResultInRange(result)) return clearInterval(descendingInterval);
-    
-    starterNumber = result;
-    updateNumber()
-}
 
 updateNumber()
 
