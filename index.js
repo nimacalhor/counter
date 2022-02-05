@@ -8,10 +8,11 @@ let starterNumber;
 let maxValue;
 let minValue;
 let step;
+let descendingInterval;
 
 const updateNumber = () => containerNumber.textContent = starterNumber;
 
-
+// form validation ______________________________
 const checkStep = function (stepAmount) {
     // input is empty
     if (!stepAmount) return "isEmpty";
@@ -35,21 +36,9 @@ const checkRange = function (min, max) {
     return false
 }
 
-const remove = function () {
-    const result = starterNumber - step;
-    // if result is in range
-    if (!isResultInRange(result)) {
-        clearInterval(descendingInterval)
-        console.log("cleared")
-        return;
-    }
+const isResultInRange = num => (minValue <= num) && (num <= maxValue);
 
-    starterNumber = result;
-    updateNumber()
-}
-
-let descendingInterval;
-
+// get and set data ______________________________
 const setValues = function (min, max, stepAmount) {
     // three possible results :
     //    true | false | "isEmpty"
@@ -77,6 +66,20 @@ const getValues = function () {
     setValues(min, max, step)
 }
 
+// controllers ______________________________
+const remove = function () {
+    const result = starterNumber - step;
+    // if result is in range
+    if (!isResultInRange(result)) {
+        clearInterval(descendingInterval)
+        console.log("cleared")
+        return;
+    }
+
+    starterNumber = result;
+    updateNumber()
+}
+
 const submitHandler = function (e) {
     e.preventDefault();
     getValues();
@@ -84,37 +87,5 @@ const submitHandler = function (e) {
     descendingInterval = setInterval(remove, 1500);
 }
 
-const isResultInRange = num => (minValue <= num) && (num <= maxValue);
-
 updateNumber()
-
 form.addEventListener("submit", submitHandler)
-
-
-// const disableBtn = function (btnType) {
-//     switch (btnType) {
-//         case "add":
-//             btnAddOne.setAttribute("disabled", "true")
-//             break;
-//         case "remove":
-//             btnRemoveOne.setAttribute("disabled", "true")
-//         default:
-//             btnAddOne.setAttribute("disabled", "true");
-//             btnRemoveOne.setAttribute("disabled", "true");
-//             break;
-//     }
-// }
-
-// const ableBtn = function (btnType) {
-//     switch (btnType) {
-//         case "add":
-//             btnAddOne.removeAttribute("disabled")
-//             break;
-//         case "remove":
-//             btnRemoveOne.removeAttribute("disabled")
-//         default:
-//             btnAddOne.removeAttribute("disabled");
-//             btnRemoveOne.removeAttribute("disabled");
-//             break;
-//     }
-// }
